@@ -2,6 +2,7 @@ boolean showSec = false, updateTime = true, invert = false;
 int h,m,s;
 float midX, midY, d, r;
 int bg, fg;
+float widthFactor = .055;
 
 void setup() {
   size(800, 800);
@@ -33,7 +34,6 @@ void draw() {
   
   noFill();
   stroke(fg);
-  strokeWeight(width * .065);
   
   ellipse(midX, midY, d, d);
   line(midX, midY-r, midX, midY+r);
@@ -43,11 +43,19 @@ void draw() {
   float ma = map(m + ((float) s) / 60.0, 0, 60, 0, TWO_PI) - HALF_PI;
   float sa = map(s, 0, 60, 0, TWO_PI) - HALF_PI;
   
-  if (showSec)
+  if (showSec) {
+    strokeWeight(1); 
     line(midX, midY, cos(sa) * r + midX, sin(sa) * r + midY);
+  }
   
+  strokeWeight(width * widthFactor);
   line(midX, midY, cos(ma) * r + midX, sin(ma) * r + midY);
   line(midX, midY, cos(ha) * r + midX, sin(ha) * r + midY);
+  
+  textSize(12);
+  fill(fg);
+  String w = "Width factor: " + nf(widthFactor, 0, 3);
+  text(w, 5, height-5);
 }
 
 void keyPressed() {
@@ -57,6 +65,12 @@ void keyPressed() {
     break;
     case ' ':
     updateTime = !updateTime;
+    break;
+    case '=':
+    widthFactor += .001;
+    break;
+    case '-':
+    widthFactor -= .001;
     break;
     case 'i':
     int tmp = bg;
