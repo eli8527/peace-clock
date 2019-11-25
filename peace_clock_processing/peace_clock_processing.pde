@@ -44,7 +44,7 @@ void draw() {
   float sa = map(s, 0, 60, 0, TWO_PI) - HALF_PI;
   
   if (showSec) {
-    strokeWeight(1); 
+    strokeWeight(2); 
     line(midX, midY, cos(sa) * r + midX, sin(sa) * r + midY);
   }
   
