@@ -6,10 +6,35 @@ const sizeFactor = .055;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
+  speed = 1;
 
-  h = hour();
-  m = minute();
-  s = second();
+  now = new Date();
+
+  q = new URLSearchParams(location.search);
+  if (q.has('time')) {
+    t = q.get('time').split(':');
+    if (t.length === 3 && t[0].length == 2 && t[1].length == 2 && t[2].length == 2) {
+      now.setHours(parseInt(t[0]));
+      now.setMinutes(parseInt(t[1]));
+      now.setSeconds(parseInt(t[2]));
+    }
+  }
+
+  if (q.has('speed')) {
+    s = q.get('speed');
+    speed = parseInt(s);
+  }
+
+  h = now.getHours();
+  m = now.getMinutes();
+  s = now.getSeconds();
+
+  setInterval(function() {
+    now = new Date(now.getTime() + 1000);
+    h = now.getHours();
+    m = now.getMinutes();
+    s = now.getSeconds();
+  }, 1000 / speed);
 
   midX = width/2;
   midY = height/2;
@@ -23,10 +48,6 @@ function setup() {
 
 function draw() {
   background(bg);
-
-  h = hour();
-  m = minute();
-  s = second();
 
   noFill();
   stroke(fg);
@@ -44,5 +65,11 @@ function draw() {
   strokeWeight(min(width, height) * sizeFactor);
   line(midX, midY, cos(ma) * r + midX, sin(ma) * r + midY);
   line(midX, midY, cos(ha) * r + midX, sin(ha) * r + midY);
-
 }
+
+// function updateTime() {
+//   now = new Date(now.getTime() + 1000);
+//   h = now.getHours();
+//   m = now.getMinutes();
+//   s = now.getSeconds();
+// }
